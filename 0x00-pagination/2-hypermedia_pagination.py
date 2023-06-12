@@ -48,9 +48,13 @@ class Server:
     def get_hyper(self, page: int = 1, page_size: int = 10) -> dict:
         """returns a dictionary containing the following key-value pairs
         """
+        assert type(page) is int and page > 0
+        assert type(page_size) is int and page_size > 0
+
         rlist = self.get_page(page, page_size)
         data = self.dataset()
         rlen = math.ceil(len(data) / page_size)
+        start, end = index_range(page, page_size)
         prev_page = 0
         next_page = 0
         if page == 1:

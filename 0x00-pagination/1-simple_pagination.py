@@ -7,13 +7,13 @@ from typing import List
 import os
 
 
-
 def index_range(page: int, page_size: int) -> tuple:
     """return a tuple of size two containing a
     start index and an end index"""
     upper_bound = page * page_size
     rtuple = (upper_bound - page_size, upper_bound)
     return rtuple
+
 
 class Server:
     """Server class to paginate a database of popular baby names.
@@ -35,13 +35,14 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-            assert isinstance(page, int) and isinstance(page_size, int)
-            assert page > 0 and page_size > 0
+        """return the appropriate page of the dataset"""
+        assert isinstance(page, int) and isinstance(page_size, int)
+        assert page > 0 and page_size > 0
 
-            data = self.dataset()
+        data = self.dataset()
 
-            try:
-                start, end = index_range(page, page_size)
-                return data[start:end]
-            except IndexError:
-                return []
+        try:
+            start, end = index_range(page, page_size)
+            return data[start:end]
+        except IndexError:
+            return []
