@@ -1,27 +1,26 @@
-import { createClient } from "redis";
+#!/usr/bin/yarn dev
+import { createClient, print } from 'redis';
 
 const client = createClient();
 
-client.on("connect", () => {
-    console.log("Redis client connected to the server");
-}).on("error", () => {
-    console.log("Redis client not connected to the server: ${error}");
+client.on('error', (err) => {
+  console.log('Redis client not connected to the server:', err.toString());
 });
 
-function setNewSchool(schoolName, value){
-    client.set(schoolName, value, print);
-}
+client.on('connect', () => {
+  console.log('Redis client connected to the server');
+});
 
-function displaySchoolValue(schoolName){
-    client.get(schoolName, (err, val) => {
-        if (err) {
-            console.error(err);
-            throw error;
-        }
-        console.log(val);
-    });
-}
+const setNewSchool = (schoolName, value) => {
+  client.SET(schoolName, value, print);
+};
 
-displaySchoolValue("Holberton");
-setNewSchool("HolbertonSanFrancisco", "100");
-displaySchoolValue("HolbertonSanFrancisco");
+const displaySchoolValue = (schoolName) => {
+  client.GET(schoolName, (_err, reply) => {
+    console.log(reply);
+  });
+};
+
+displaySchoolValue('Holberton');
+setNewSchool('HolbertonSanFrancisco', '100');
+displaySchoolValue('HolbertonSanFrancisco');
